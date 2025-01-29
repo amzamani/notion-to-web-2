@@ -1,7 +1,7 @@
-// global styles shared across the entire site
 import * as React from 'react'
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
+import Script from 'next/script'
 
 import * as Fathom from 'fathom-client'
 // used for rendering equations (optional)
@@ -36,7 +36,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
 
   React.useEffect(() => {
-    function onRouteChangeComplete() {
+    function onRouteChangeComplete(url: URL) {
       if (fathomId) {
         Fathom.trackPageview()
       }
@@ -44,6 +44,11 @@ export default function App({ Component, pageProps }: AppProps) {
       if (posthogId) {
         posthog.capture('$pageview')
       }
+
+      // Google Analytics Page Tracking
+      window.gtag?.('config', 'G-5MZRET67EV', {
+        page_path: url,
+      })
     }
 
     if (fathomId) {
@@ -61,5 +66,26 @@ export default function App({ Component, pageProps }: AppProps) {
     }
   }, [router.events])
 
-  return <Component {...pageProps} />
+  return (
+    <>
+      {/* Google Analytics Script */}
+      <Script
+        strategy="afterInteractive"
+        src="https://www.googletagmanager.com/gtag/js?id=G-5MZRET67EV"
+      />
+      <Script
+        id="google-analytics"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-5MZRET67EV', { page_path: window.location.pathname });
+          `,
+        }}
+      />
+      <Component {...pageProps} />
+    </>
+  )
 }

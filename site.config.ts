@@ -25,7 +25,7 @@ export default siteConfig({
   // social usernames (optional)
   twitter: 'znap_in',
   // github: '',
-  linkedin: '/company/znap-products/',
+  linkedin: 'zamanitech',
   instagram: 'znap.in',
   // mastodon: '#', // optional mastodon profile URL, provides link verification
   // newsletter: '#', // optional newsletter URL
@@ -58,15 +58,15 @@ export default siteConfig({
   // whether to use the default notion navigation style or a custom one with links to
   // important pages
   // navigationStyle: 'default'
-  navigationStyle: 'custom',
-  navigationLinks: [
-    {
-      title: 'About',
-      pageId: '24dd473a39584d70828468148b3b5bc3'
-    },
-    {
-      title: 'Contact',
-      pageId: 'c4f5dab6339e415e91d96c3b32bfb0d1'
-    }
-  ]
+  navigationStyle: 'custom'
+  // navigationLinks: [
+  //   {
+  //     title: 'About',
+  //     pageId: '24dd473a39584d70828468148b3b5bc3'
+  //   },
+  //   {
+  //     title: 'Contact',
+  //     pageId: 'c4f5dab6339e415e91d96c3b32bfb0d1'
+  //   }
+  // ]
 })
