@@ -14,13 +14,13 @@ export default siteConfig({
   rootNotionSpaceId: null,
 
   // basic site info (required)
-  name: 'Znap Product Studio',
+  name: 'Znap Labs',
   domain: 'znap.in/',
   author: 'Zamani Tech Ventures Pvt Ltd',
 
   // open graph metadata (optional)
   description:
-    'Znap Product Studio',
+    'Znap Labs',
 
   // social usernames (optional)
   twitter: 'znap_in',
