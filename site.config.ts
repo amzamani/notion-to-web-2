@@ -15,7 +15,7 @@ export default siteConfig({
 
   // basic site info (required)
   name: 'Znap Labs',
-  domain: 'znap.in/',
+  domain: 'abu.znapai.com/',
   author: 'Zamani Tech Ventures Pvt Ltd',
 
   // open graph metadata (optional)
@@ -23,10 +23,10 @@ export default siteConfig({
     'Znap Labs',
 
   // social usernames (optional)
-  twitter: 'znap_in',
+  // twitter: 'znap_in',
   // github: '',
-  linkedin: 'zamanitech',
-  instagram: 'znap.in',
+  // linkedin: 'zamanitech',
+  // instagram: 'znap.in',
   // mastodon: '#', // optional mastodon profile URL, provides link verification
   // newsletter: '#', // optional newsletter URL
   // youtube: '@toffeemoney', // optional youtube channel name or `channel/UCGbXXXXXXXXXXXXXXXXXXXXXX`
