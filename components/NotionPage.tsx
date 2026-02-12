@@ -3,7 +3,6 @@ import dynamic from 'next/dynamic'
 import Image from 'next/legacy/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { type PageBlock } from 'notion-types'
 import { formatDate, getBlockTitle, getPageProperty } from 'notion-utils'
 import * as React from 'react'
 import BodyClassName from 'react-body-classname'
@@ -23,13 +22,21 @@ import { searchNotion } from '@/lib/search-notion'
 import { useDarkMode } from '@/lib/use-dark-mode'
 
 import { Footer } from './Footer'
-import { GitHubShareButton } from './GitHubShareButton'
 import { Loading } from './Loading'
 import { NotionPageHeader } from './NotionPageHeader'
 import { Page404 } from './Page404'
 import { PageAside } from './PageAside'
 import { PageHead } from './PageHead'
 import styles from './styles.module.css'
+
+// Local minimal page-block type (avoids TS module-resolution false-positives
+// like "Cannot find module 'notion-types'" in some editor setups).
+// We only access `format?.page_cover`.
+type PageBlock = {
+  format?: {
+    page_cover?: string
+  }
+}
 
 // -----------------------------------------------------------------------------
 // dynamic imports for optional components
@@ -285,6 +292,7 @@ export function NotionPage({
 
   const socialImage = mapImageUrl(
     getPageProperty<string>('Social Image', block, recordMap) ||
+    // `format?.page_cover` exists on Notion page blocks; keep access safe.
     (block as PageBlock).format?.page_cover ||
     config.defaultPageCover,
     block
@@ -338,7 +346,7 @@ export function NotionPage({
                 pageAside={pageAside}
                 footer={footer}
               />
-              <GitHubShareButton />
+              {/* <GitHubShareButton /> */}
             </>
           )
         } catch (err) {

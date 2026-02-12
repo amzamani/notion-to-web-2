@@ -7,7 +7,9 @@ export default siteConfig({
 
   // toffeeblog page
   // https://silicon-woodpecker-5c5.notion.site/Znap-53ea13df87e143afb9afa8f7c290b3b3?pvs=4
-  rootNotionPageId: '53ea13df87e143afb9afa8f7c290b3b3',
+  // https://silicon-woodpecker-5c5.notion.site/test-305e56219f3380f7ba12e2a4e63e9907?pvs=143
+  rootNotionPageId: '305e56219f3380f7ba12e2a4e63e9907',
+  // rootNotionPageId: '437a047a1dfb4932bf54c3772ed11849',
 
   // if you want to restrict pages to a single notion workspace (optional)
   // (this should be a Notion ID; see the docs for how to extract this)
@@ -57,8 +59,10 @@ export default siteConfig({
 
   // whether to use the default notion navigation style or a custom one with links to
   // important pages
-  // navigationStyle: 'default'
-  navigationStyle: 'custom'
+  navigationStyle: 'default',
+  isSearchEnabled: false
+
+  // navigationStyle: 'custom',
   // navigationLinks: [
   //   {
   //     title: 'About',

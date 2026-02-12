@@ -4,6 +4,9 @@
     "baseUrl": ".",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    // Prefer bundler-style resolution for Next.js projects.
+    // If VSCode reports false-positive "Cannot find module ..." errors, restart
+    // the TS server (Command Palette → "TypeScript: Restart TS server").
     "moduleResolution": "bundler",
     "jsx": "preserve",
     "paths": {
