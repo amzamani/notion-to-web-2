@@ -15,7 +15,7 @@ export default siteConfig({
 
   // basic site info (required)
   name: 'Znap Labs',
-  domain: 'abu.znapai.com/',
+  domain: 'abu.znapai.com',
   author: 'Zamani Tech Ventures Pvt Ltd',
 
   // open graph metadata (optional)

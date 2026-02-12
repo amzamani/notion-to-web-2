@@ -1,16 +1,10 @@
-import * as React from 'react'
-import type { AppProps } from 'next/app'
-import { useRouter } from 'next/router'
-import Script from 'next/script'
-
-import * as Fathom from 'fathom-client'
 // used for rendering equations (optional)
 import 'katex/dist/katex.min.css'
-import posthog from 'posthog-js'
 // used for code syntax highlighting (optional)
 import 'prismjs/themes/prism-coy.css'
 // core styles shared by all of react-notion-x (required)
 import 'react-notion-x/src/styles.css'
+// global styles shared across the entire site
 import 'styles/global.css'
 // this might be better for dark mode
 // import 'prismjs/themes/prism-okaidia.css'
@@ -18,6 +12,12 @@ import 'styles/global.css'
 import 'styles/notion.css'
 // global style overrides for prism theme (optional)
 import 'styles/prism-theme.css'
+
+import type { AppProps } from 'next/app'
+import * as Fathom from 'fathom-client'
+import { useRouter } from 'next/router'
+import { posthog } from 'posthog-js'
+import * as React from 'react'
 
 import { bootstrap } from '@/lib/bootstrap-client'
 import {
@@ -36,7 +36,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
 
   React.useEffect(() => {
-    function onRouteChangeComplete(url: URL) {
+    function onRouteChangeComplete() {
       if (fathomId) {
         Fathom.trackPageview()
       }
@@ -44,11 +44,6 @@ export default function App({ Component, pageProps }: AppProps) {
       if (posthogId) {
         posthog.capture('$pageview')
       }
-
-      // Google Analytics Page Tracking
-      window.gtag?.('config', 'G-5MZRET67EV', {
-        page_path: url,
-      })
     }
 
     if (fathomId) {
@@ -66,26 +61,5 @@ export default function App({ Component, pageProps }: AppProps) {
     }
   }, [router.events])
 
-  return (
-    <>
-      {/* Google Analytics Script */}
-      <Script
-        strategy="afterInteractive"
-        src="https://www.googletagmanager.com/gtag/js?id=G-5MZRET67EV"
-      />
-      <Script
-        id="google-analytics"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-5MZRET67EV', { page_path: window.location.pathname });
-          `,
-        }}
-      />
-      <Component {...pageProps} />
-    </>
-  )
+  return <Component {...pageProps} />
 }
