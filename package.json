@@ -79,5 +79,12 @@
       "prettier --ignore-unknown --write",
       "eslint --fix"
     ]
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "sharp",
+      "simple-git-hooks"
+    ],
+    "neverBuiltDependencies": []
   }
 }
