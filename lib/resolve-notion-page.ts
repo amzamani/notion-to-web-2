@@ -91,12 +91,5 @@ export async function resolveNotionPage(
   }
 
   const props: PageProps = { site, recordMap, pageId }
-  console.log('resolveNotionPage props', { site, pageId })
-  try {
-    const aclResult = await acl.pageAcl(props)
-    return { ...props, ...aclResult }
-  } catch (err) {
-    console.error('ACL error', err)
-    throw err
-  }
+  return { ...props, ...(await acl.pageAcl(props)) }
 }

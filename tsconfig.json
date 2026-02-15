@@ -2,32 +2,12 @@
   "extends": "@fisch0920/config/tsconfig-react",
   "compilerOptions": {
     "baseUrl": ".",
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    // Prefer bundler-style resolution for Next.js projects.
-    // If VSCode reports false-positive "Cannot find module ..." errors, restart
-    // the TS server (Command Palette → "TypeScript: Restart TS server").
-    "moduleResolution": "bundler",
-    "jsx": "preserve",
     "paths": {
-      "@/components/*": [
-        "components/*"
-      ],
-      "@/lib/*": [
-        "lib/*"
-      ],
-      "@/styles/*": [
-        "styles/*"
-      ]
+      "@/components/*": ["components/*"],
+      "@/lib/*": ["lib/*"],
+      "@/styles/*": ["styles/*"]
     }
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "*.config.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "*.config.ts"],
+  "exclude": ["node_modules"]
 }

@@ -16,10 +16,7 @@ export default [
       'jsx-a11y/media-has-caption': 'off',
       'jsx-a11y/interactive-supports-focus': 'off',
       'jsx-a11y/anchor-is-valid': 'off',
-      '@typescript-eslint/naming-convention': 'off',
-      '@typescript-eslint/ban-ts-comment': 'off',
-      'unicorn/prefer-optional-catch-binding': 'off',
-      '@typescript-eslint/no-unused-vars': ['error', { 'caughtErrors': 'none' }]
+      '@typescript-eslint/naming-convention': 'off'
     }
   }
 ]

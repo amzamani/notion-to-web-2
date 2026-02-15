@@ -3,7 +3,12 @@ import dynamic from 'next/dynamic'
 import Image from 'next/legacy/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { formatDate, getBlockTitle, getPageProperty } from 'notion-utils'
+import {
+  formatDate,
+  getBlockTitle,
+  getBlockValue,
+  getPageProperty
+} from 'notion-utils'
 import * as React from 'react'
 import BodyClassName from 'react-body-classname'
 import {
@@ -35,6 +40,7 @@ import styles from './styles.module.css'
 type PageBlock = {
   format?: {
     page_cover?: string
+    page_cover_position?: number
   }
 }
 
@@ -46,67 +52,67 @@ const Code = dynamic(() =>
   import('react-notion-x/build/third-party/code').then(async (m) => {
     // add / remove any prism syntaxes here
     await Promise.allSettled([
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-markup-templating.js'),
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-markup.js'),
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-bash.js'),
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-c.js'),
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-cpp.js'),
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-csharp.js'),
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-docker.js'),
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-java.js'),
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-js-templates.js'),
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-coffeescript.js'),
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-diff.js'),
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-git.js'),
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-go.js'),
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-graphql.js'),
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-handlebars.js'),
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-less.js'),
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-makefile.js'),
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-markdown.js'),
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-objectivec.js'),
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-ocaml.js'),
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-python.js'),
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-reason.js'),
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-rust.js'),
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-sass.js'),
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-scss.js'),
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-solidity.js'),
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-sql.js'),
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-stylus.js'),
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-swift.js'),
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-wasm.js'),
-      // @ts-ignore
+      // @ts-expect-error Ignore prisma types
       import('prismjs/components/prism-yaml.js')
     ])
     return m.Code
@@ -143,7 +149,6 @@ function Tweet({ id }: { id: string }) {
   const tweet = (recordMap as types.ExtendedTweetRecordMap)?.tweets?.[id]
 
   return (
-    // @ts-ignore
     <React.Suspense fallback={<TweetSkeleton />}>
       {tweet ? <EmbeddedTweet tweet={tweet} /> : <TweetNotFound />}
     </React.Suspense>
@@ -185,7 +190,6 @@ const propertyTextValue = (
   defaultFn: () => React.ReactNode
 ) => {
   if (pageHeader && schema?.name?.toLowerCase() === 'author') {
-    // @ts-ignore
     return <b>{defaultFn()}</b>
   }
 
@@ -233,7 +237,7 @@ export function NotionPage({
   }, [site, recordMap, lite])
 
   const keys = Object.keys(recordMap?.block || {})
-  const block = recordMap?.block?.[keys[0]!]?.value
+  const block = getBlockValue(recordMap?.block?.[keys[0]!])
 
   // const isRootPage =
   //   parsePageId(block?.id) === parsePageId(site?.rootNotionPageId)
@@ -245,7 +249,6 @@ export function NotionPage({
 
   const pageAside = React.useMemo(
     () => (
-      // @ts-ignore
       <PageAside
         block={block!}
         recordMap={recordMap!}
@@ -255,16 +258,13 @@ export function NotionPage({
     [block, recordMap, isBlogPost]
   )
 
-  // @ts-ignore
   const footer = React.useMemo(() => <Footer />, [])
 
   if (router.isFallback) {
-    // @ts-ignore
     return <Loading />
   }
 
-  if (error || !site || !block) {
-    // @ts-ignore
+  if (error || !site || !block || !recordMap) {
     return <Page404 site={site} pageId={pageId} error={error} />
   }
 
@@ -292,7 +292,6 @@ export function NotionPage({
 
   const socialImage = mapImageUrl(
     getPageProperty<string>('Social Image', block, recordMap) ||
-    // `format?.page_cover` exists on Notion page blocks; keep access safe.
     (block as PageBlock).format?.page_cover ||
     config.defaultPageCover,
     block
@@ -317,54 +316,30 @@ export function NotionPage({
       {isLiteMode && <BodyClassName className='notion-lite' />}
       {isDarkMode && <BodyClassName className='dark-mode' />}
 
-      {(() => {
-        try {
-          return (
-            <>
-              {/* @ts-ignore */}
-              <NotionRenderer
-                bodyClassName={cs(
-                  styles.notion,
-                  pageId === site.rootNotionPageId && 'index-page'
-                )}
-                darkMode={isDarkMode}
-                components={components}
-                recordMap={recordMap}
-                rootPageId={site.rootNotionPageId}
-                rootDomain={site.domain}
-                fullPage={!isLiteMode}
-                previewImages={!!recordMap.preview_images}
-                showCollectionViewDropdown={false}
-                showTableOfContents={showTableOfContents}
-                minTableOfContentsItems={minTableOfContentsItems}
-                defaultPageIcon={config.defaultPageIcon}
-                defaultPageCover={config.defaultPageCover}
-                defaultPageCoverPosition={config.defaultPageCoverPosition}
-                mapPageUrl={siteMapPageUrl}
-                mapImageUrl={mapImageUrl}
-                searchNotion={config.isSearchEnabled ? searchNotion : undefined}
-                pageAside={pageAside}
-                footer={footer}
-              />
-              {/* <GitHubShareButton /> */}
-            </>
-          )
-        } catch (err) {
-          console.error('NotionRenderer error:', err)
-          return (
-            <div style={{ padding: '2rem', textAlign: 'center' }}>
-              <h1>Unable to render this page</h1>
-              <p>There was an error rendering the Notion content.</p>
-              <p style={{ fontSize: '0.9rem', color: '#666' }}>
-                Try viewing this page at{' '}
-                <a href={`https://notion.so/${pageId}`} target="_blank" rel="noopener noreferrer">
-                  notion.so/{pageId}
-                </a>
-              </p>
-            </div>
-          )
-        }
-      })()}
+      <NotionRenderer
+        bodyClassName={cs(
+          styles.notion,
+          pageId === site.rootNotionPageId && 'index-page'
+        )}
+        darkMode={isDarkMode}
+        components={components}
+        recordMap={recordMap}
+        rootPageId={site.rootNotionPageId}
+        rootDomain={site.domain}
+        fullPage={!isLiteMode}
+        previewImages={!!recordMap.preview_images}
+        showCollectionViewDropdown={false}
+        showTableOfContents={showTableOfContents}
+        minTableOfContentsItems={minTableOfContentsItems}
+        defaultPageIcon={config.defaultPageIcon}
+        defaultPageCover={config.defaultPageCover}
+        defaultPageCoverPosition={config.defaultPageCoverPosition}
+        mapPageUrl={siteMapPageUrl}
+        mapImageUrl={mapImageUrl}
+        searchNotion={config.isSearchEnabled ? searchNotion : undefined}
+        pageAside={pageAside}
+        footer={footer}
+      />
     </>
   )
 }

@@ -30,14 +30,8 @@ if (!rootNotionPageId) {
 }
 
 // if you want to restrict pages to a single notion workspace (optional)
-const rawRootNotionSpaceId = getSiteConfig('rootNotionSpaceId') as
-  | string
-  | null
-  | undefined
 export const rootNotionSpaceId: string | null =
-  rawRootNotionSpaceId && typeof rawRootNotionSpaceId === 'string'
-    ? parsePageId(rawRootNotionSpaceId, { uuid: true }) ?? null
-    : null
+  parsePageId(getSiteConfig('rootNotionSpaceId'), { uuid: true }) ?? null
 
 export const pageUrlOverrides = cleanPageUrlMap(
   getSiteConfig('pageUrlOverrides', {}) || {},
@@ -75,16 +69,10 @@ export const getMastodonHandle = (): string | undefined => {
     return
   }
 
-  try {
-    // Since Mastodon is decentralized, handles include the instance domain name.
-    // e.g. @example@mastodon.social
-    const url = new URL(mastodon)
-    return `${url.pathname.slice(1)}@${url.hostname}`
-  } catch (err) {
-    // Handle invalid URL gracefully during SSR
-    console.warn(`Invalid mastodon URL: ${mastodon}`)
-    return undefined
-  }
+  // Since Mastodon is decentralized, handles include the instance domain name.
+  // e.g. @example@mastodon.social
+  const url = new URL(mastodon)
+  return `${url.pathname.slice(1)}@${url.hostname}`
 }
 
 // default notion values for site-wide consistency (optional; may be overridden on a per-page basis)

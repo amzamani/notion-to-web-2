@@ -18,9 +18,9 @@ export const getStaticProps: GetStaticProps<PageProps, Params> = async (
   } catch (err) {
     console.error('page error', domain, rawPageId, err)
 
-    // Return notFound instead of throwing to allow build to continue
-    // This page will show 404 but other pages will build successfully
-    return { notFound: true, revalidate: 10 }
+    // we don't want to publish the error version of this page, so
+    // let next.js know explicitly that incremental SSG failed
+    throw err
   }
 }
 

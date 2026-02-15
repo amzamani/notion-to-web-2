@@ -11,58 +11,32 @@ const uuid = !!includeNotionIdInUrls
 
 export const mapPageUrl =
   (site: Site, recordMap: ExtendedRecordMap, searchParams: URLSearchParams) =>
-    (pageId = '') => {
-      try {
-        if (!pageId || typeof pageId !== 'string') {
-          return createUrl('/', searchParams)
-        }
+  (pageId = '') => {
+    const pageUuid = parsePageId(pageId, { uuid: true })!
 
-        const pageUuid = parsePageId(pageId, { uuid: true })
-
-        if (!pageUuid) {
-          return createUrl('/', searchParams)
-        }
-
-        if (uuidToId(pageUuid) === site.rootNotionPageId) {
-          return createUrl('/', searchParams)
-        } else {
-          return createUrl(
-            `/${getCanonicalPageId(pageUuid, recordMap, { uuid })}`,
-            searchParams
-          )
-        }
-      } catch (err) {
-        console.warn('mapPageUrl error:', pageId, err)
-        return createUrl('/', searchParams)
-      }
+    if (uuidToId(pageUuid) === site.rootNotionPageId) {
+      return createUrl('/', searchParams)
+    } else {
+      return createUrl(
+        `/${getCanonicalPageId(pageUuid, recordMap, { uuid })}`,
+        searchParams
+      )
     }
+  }
 
 export const getCanonicalPageUrl =
   (site: Site, recordMap: ExtendedRecordMap) =>
-    (pageId = '') => {
-      try {
-        if (!pageId || typeof pageId !== 'string') {
-          return `https://${site.domain}`
-        }
+  (pageId = '') => {
+    const pageUuid = parsePageId(pageId, { uuid: true })!
 
-        const pageUuid = parsePageId(pageId, { uuid: true })
-
-        if (!pageUuid) {
-          return `https://${site.domain}`
-        }
-
-        if (uuidToId(pageId) === site.rootNotionPageId) {
-          return `https://${site.domain}`
-        } else {
-          return `https://${site.domain}/${getCanonicalPageId(pageUuid, recordMap, {
-            uuid
-          })}`
-        }
-      } catch (err) {
-        console.warn('getCanonicalPageUrl error:', pageId, err)
-        return `https://${site.domain}`
-      }
+    if (uuidToId(pageId) === site.rootNotionPageId) {
+      return `https://${site.domain}`
+    } else {
+      return `https://${site.domain}/${getCanonicalPageId(pageUuid, recordMap, {
+        uuid
+      })}`
     }
+  }
 
 function createUrl(path: string, searchParams: URLSearchParams) {
   return [path, searchParams.toString()].filter(Boolean).join('?')

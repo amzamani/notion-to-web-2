@@ -65,12 +65,7 @@ export async function getPage(pageId: string): Promise<ExtendedRecordMap> {
     ;(recordMap as any).preview_images = previewImageMap
   }
 
-  try {
-    await getTweetsMap(recordMap)
-  } catch (err) {
-    console.error('Error in getTweetsMap:', err)
-    // Continue without tweets if there's an error
-  }
+  await getTweetsMap(recordMap)
 
   return recordMap
 }
